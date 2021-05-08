@@ -24,8 +24,8 @@ def keydown_event(event,stepX,stepY,bear_pos):
     elif event.key == pygame.K_DOWN:
         stepY = 5
     elif event.key == pygame.K_SPACE:
-        coin_pos = [bear_pos[0],bear_pos[1]+10]
-    return stepX, stepY, coin_pos
+        coins_pos = [bear_pos[0],bear_pos[1]+10]
+    return stepX, stepY, coins_pos
 
 def honey_show(honey_objs,startY=-60):
     if len(honey_objs)<5:
@@ -40,6 +40,22 @@ def honey_show(honey_objs,startY=-60):
             honey_objs[i] = [pos[0],pos[1]+honey_speed]
             i = i + 1
     return honey_objs
+
+def distance(cx,cy,hx,hy):
+    a = cx - hx
+    b = cy - hy
+    return math.sqrt(a*a+b*b)
+
+def screen_boder(X,Y):
+    if X < 0:
+        X = 0
+    elif X > 1024:
+        X = 1024
+    if Y < 0:
+        Y = 0
+    elif Y > 577:
+        Y = 577
+    return X, Y
 
 pygame.init()
 size = weight, height = 1024, 577
@@ -60,6 +76,12 @@ while 1:
         coins_pos[i] = [v[0],v[1]-10]
         screen.blit(coin,(coins_pos[i][0]+45,coins_pos[i][1]))
         distance_c = [coins_pos[i][0]+45,coins_pos[i][1]]
+        hi = 0
+        for hp in honey_objs:
+            if distance(distance_c[0],distance_c[1],hp[0],hp[1]) < 60:
+                screen.blit(eat,(hp[0],hp[1]))
+                honey_objs[hi] = [random.randint(0,900),-50]
+            hi = hi + 1
         i = i + 1
 
     for event in pygame.event.get():
