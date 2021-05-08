@@ -12,9 +12,11 @@ stepX = 0
 stepY = 0
 honey_speed=2
 honey_objs=[]
+coins_pos = []
+
 
 def keydown_event(event,stepX,stepY,bear_pos):
-    bear_pos = []
+    coin_pos = []
     if event.key == pygame.K_RIGHT:
         stepX = 5
     elif event.key == pygame.K_LEFT:
@@ -24,8 +26,8 @@ def keydown_event(event,stepX,stepY,bear_pos):
     elif event.key == pygame.K_DOWN:
         stepY = 5
     elif event.key == pygame.K_SPACE:
-        coins_pos = [bear_pos[0],bear_pos[1]+10]
-    return stepX, stepY, coins_pos
+        coin_pos = [bear_pos[0],bear_pos[1]+10]
+    return stepX, stepY, coin_pos
 
 def honey_show(honey_objs,startY=-60):
     if len(honey_objs)<5:
@@ -46,7 +48,7 @@ def distance(cx,cy,hx,hy):
     b = cy - hy
     return math.sqrt(a*a+b*b)
 
-def screen_boder(X,Y):
+def screen_border(X,Y):
     if X < 0:
         X = 0
     elif X > 1024:
@@ -63,9 +65,10 @@ screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Crazy for honey")
 
 while 1:
-    bear_pos_ = []
+    coin_pos_ = []
     bearX = bearX + stepX
     bearY = bearY + stepY
+    bearX,bearY = screen_border(bearX,bearY)
 
     screen.blit(background,(0,0))
     screen.blit(bear,(bearX,bearY))
